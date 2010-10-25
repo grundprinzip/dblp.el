@@ -9,11 +9,15 @@
 (eval-when-compile
   (require 'wid-edit))
 
-
-
 (defvar dblp-last-buffer nil
   "Variable to store the name of the last buffer")
 
+(define-minor-mode dblp-mode
+  "Toggle DBLP mode"
+  nil
+  " dblp"
+  '( ("\C-\M-c" . dblp-query-browse))
+  :group 'dblp)
 
 (defun dblp-insert-citation (cite)
   (kill-buffer)
