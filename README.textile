@@ -16,7 +16,7 @@ h2. Installation
     (add-to-list 'load-path "~/.emacs.d/elisp/dblp.el")
     (require 'dblp)
     (add-hook 'LaTeX-mode-hook 'dblp-mode)
-    <code>
+    </code>
 </pre>
 
 
