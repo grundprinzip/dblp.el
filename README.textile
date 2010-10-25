@@ -23,3 +23,8 @@ h2. Installation
 h2. Supported Platforms
 
 * anything that has Ruby installed and internet access and runs Emacs
+
+
+h2. Copyright
+
+2010 - Martin Grund <grundprinzip@gmail.com>
