@@ -1,6 +1,11 @@
 ;; This is a simple mode for Emacs to support DBLP queries and
 ;; insertions
 ;;
+;;  ;; DBLP mode
+;;  (add-to-list 'load-path "~/.emacs.d/elisp/dblp.el")
+;;  (require 'dblp)
+;;  (add-hook 'LaTeX-mode-hook 'dblp-mode)
+;;
 ;; Copyright (C) 2010, Martin Grund <grundprinzip@gmail.com>
 
 (require 'json)
@@ -12,6 +17,7 @@
 (defvar dblp-last-buffer nil
   "Variable to store the name of the last buffer")
 
+;; Define the minor mode and the key binding
 (define-minor-mode dblp-mode
   "Toggle DBLP mode"
   nil

@@ -1,0 +1,25 @@
+h1 dblp.el
+
+This is a minor mode for Emacs to perform queries to the DBLP directly
+from Emacs.
+
+
+h2. Installation
+
+* go to you emacs site lisp folder (typically in ~/.emacs.d)
+* <code>git clone git@github.com:grundprinzip/dblp.el.git</code>
+* and now add the following to your emacs config file
+
+<pre>
+    <code>
+    ;; DBLP mode
+    (add-to-list 'load-path "~/.emacs.d/elisp/dblp.el")
+    (require 'dblp)
+    (add-hook 'LaTeX-mode-hook 'dblp-mode)
+    <code>
+</pre>
+
+
+h2. Supported Platforms
+
+* anything that has Ruby installed and internet access and runs Emacs
