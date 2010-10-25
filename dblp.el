@@ -6,33 +6,61 @@
 (require 'json)
 (require 'widget)
 
+(eval-when-compile
+  (require 'wid-edit))
+
+
+
+(defvar dblp-last-buffer nil
+  "Variable to store the name of the last buffer")
+
+
+(defun dblp-insert-citation (cite)
+  (kill-buffer)
+  (switch-to-buffer dblp-last-buffer)
+  (insert (format "\\cite{%s}" cite))
+  )
 
 (defun dblp-query-browse (q)
-  "This method is called to display a list of citations that
-match the search query."
   (interactive "MDBLP Query: ")
-  (let (result citations)
-    (switch-to-buffer "*DBLP*")
-    (message "Searching for %s" q)
-    
-    (setq result (shell-command-to-string (concat "ruby " "query.rb " q)))
-    (goto-char 1)
-
-    ; Parse the result json and be happy
-    (setq citations (json-read-from-string result))
-
-    (loop for elem across citations do
-    	  (let (cite title)
-    	    (setq cite (cdr (assoc 'key elem)))
-    	    (setq title (cdr (assoc 'title elem)))
-	    ; Write the widget here
-    	  ))
-    
-    ;;(insert result)
+  (setq dblp-last-buffer (buffer-name))
   
-    ))
+  (switch-to-buffer "*DBLP*")
+  (kill-all-local-variables)
+  (make-local-variable 'widget-example-repeat)
+  (let ((inhibit-read-only t))
+    (erase-buffer))
+  (let ((all (overlay-lists)))
+    ;; Delete all the overlays.
+    (mapcar 'delete-overlay (car all))
+    (mapcar 'delete-overlay (cdr all)))
 
+  (message "Searching for %s" q)
+  (widget-insert "=== DBLP Query Result")
+  (widget-insert "\n\n")
+  
+  (setq result (shell-command-to-string (concat "ruby " "query.rb " q)))
+  					; Parse the result json and be happy
+  (setq citations (json-read-from-string result))
+
+  (loop for elem across citations do
+  	(let (cite title)
+  	  (setq cite (cdr (assoc 'cite elem)))
+  	  (setq title (cdr (assoc 'title elem)))
+  	  (widget-create 'link
+  			 :tag cite
+  			 :format "\t%[%v%]\n\n"
+  			 :help-echo "Click to insert citation"
+  			 :notify (lambda (widget &rest ignore)
+				   (dblp-insert-citation (widget-get widget :tag)))
+  			 title)
+  	  ))          
+  (use-local-map widget-keymap)
+  (widget-setup)
+  (goto-line 0)
+  )
 
 (provide 'dblp)
+
 
 
