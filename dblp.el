@@ -33,10 +33,8 @@
 
 
 (defun dblp-do-request (q)
-  (let (processed result line body body-object)
-    (setq result (http-post-simple
-  		"http://dblp.mpi-inf.mpg.de/autocomplete-php/autocomplete/ajax.php"
-		'((mo . "100")
+  (let (processed result line body body-object params)
+    (setq params '((mo . "100")
 		 (navigation_mode . "history")
 		 (qi . "1")
 		 (eph . "1")
@@ -62,9 +60,13 @@
 		 (qt . "H")
 		 (ll . "2")
 		 (qid . "6")
-		 (query . "Kossm")
 		 (hrw . "1d")
-		 (hpp . "20"))
+		 (hpp . "20")))
+
+    (setq params (cons (cons 'query q) params))
+    (setq result (http-post-simple
+  		"http://dblp.mpi-inf.mpg.de/autocomplete-php/autocomplete/ajax.php"
+		params
 		))
 
     ;; Once we have the result we have to extract the correct line
